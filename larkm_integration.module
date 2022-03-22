@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * larkm Integration module.
+ */
+
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_presave for Node entities.
+ */
+function larkm_integration_node_presave(NodeInterface $node) {
+  if ($node->hasField('field_ark')) {
+    // @todo: only populate the field if it's empty.
+    $node->set('field_ark', 'http://ids.lib.sfu.ca/ark:/99999/s1' . $node->uuid());
+  }
+}

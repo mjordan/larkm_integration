@@ -1,0 +1,5 @@
+name: 'larkm Integration'
+description: "Provides integration with the larkm ARK manager/resolver."
+type: module
+core: 8.x
+core_version_requirement: ^8 || ^9
