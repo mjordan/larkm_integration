@@ -19,7 +19,14 @@ function larkm_integration_node_presave(NodeInterface $node) {
   $shoulder = $config->get('larkm_integration_shoulder');
   $ark_url = $larkm_hostname . '/ark:/' . $naan . '/' . $shoulder . $node->uuid();
 
-  if ($node->hasField($ark_fieldname) && strlen($node->get($ark_fieldname)->value) == 0) {
-    $node->set($ark_fieldname, $ark_url);
+  if ($node->hasField($ark_fieldname)) {
+    $raw_field_values = $node->get($ark_fieldname)->getValue();
+    $field_values = [];
+    foreach ($raw_field_values as $raw_field_value) {
+      $field_values[] = $raw_field_value['value']; 
+    }
+    if (!in_array($ark_url, $field_values)) {
+      $node->{$ark_fieldname}->appendItem($ark_url);
+    }
   }
 }
