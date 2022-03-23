@@ -1,0 +1,5 @@
+system.larkm_integration_settings:
+  title: 'larkm Integration'
+  parent: system.admin_config_search
+  route_name: larkm_integration.settings
+  description: 'Confgure larkm Integration settings.'

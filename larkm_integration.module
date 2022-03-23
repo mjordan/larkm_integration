@@ -11,8 +11,15 @@ use Drupal\node\NodeInterface;
  * Implements hook_ENTITY_TYPE_presave for Node entities.
  */
 function larkm_integration_node_presave(NodeInterface $node) {
-  if ($node->hasField('field_ark')) {
-    // @todo: only populate the field if it's empty.
-    $node->set('field_ark', 'http://ids.lib.sfu.ca/ark:/99999/s1' . $node->uuid());
+  $config = \Drupal::config('larkm_integration.settings');
+
+  $ark_fieldname = $config->get('larkm_integration_ark_fieldname');
+  $larkm_hostname = $config->get('larkm_integration_larkm_hostname');
+  $naan = $config->get('larkm_integration_naan');
+  $shoulder = $config->get('larkm_integration_shoulder');
+  $ark_url = $larkm_hostname . '/ark:/' . $naan . '/' . $shoulder . $node->uuid();
+
+  if ($node->hasField($ark_fieldname) && strlen($node->get($ark_fieldname)->value) == 0) {
+    $node->set($ark_fieldname, $ark_url);
   }
 }

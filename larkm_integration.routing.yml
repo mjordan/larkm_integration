@@ -1,0 +1,7 @@
+larkm_integration.settings:
+  path: '/admin/config/larkm_integration/settings'
+  defaults:
+    _form: '\Drupal\larkm_integration\Plugin\Form\LarkmIntegrationSettingsForm'
+    _title: 'larkm Integration'
+  requirements:
+    _permission: 'administer site configuration'
