@@ -1,4 +1,5 @@
-larkm_integration_ark_fieldname: 'field_ark'
 larkm_integration_larkm_hostname: 'http://localhost:8000'
 larkm_integration_naan: '99999'
 larkm_integration_shoulder: 's1'
+larkm_integration_ark_fieldname: 'field_ark'
+larkm_integration_bundles: []

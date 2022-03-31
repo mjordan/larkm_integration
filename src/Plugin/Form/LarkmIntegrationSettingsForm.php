@@ -32,13 +32,6 @@ class LarkmIntegrationSettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('larkm_integration.settings');
 
-    $form['larkm_integration_ark_fieldname'] = [
-      '#type' => 'textfield',
-      '#maxlength' => 256,
-      '#title' => $this->t('ARK fieldname'),
-      '#description' => $this->t('Machine name of the Drupal field where ARKs are to be stored.'),
-      '#default_value' => $config->get('larkm_integration_ark_fieldname'),
-    ];
     $form['larkm_integration_larkm_hostname'] = [
       '#type' => 'textfield',
       '#maxlength' => 256,
@@ -60,7 +53,27 @@ class LarkmIntegrationSettingsForm extends ConfigFormBase {
       '#description' => $this->t("The shoulder to use in the ARKs."),
       '#default_value' => $config->get('larkm_integration_shoulder'),
     ];
-
+    $form['larkm_integration_ark_fieldname'] = [
+      '#type' => 'textfield',
+      '#maxlength' => 256,
+      '#title' => $this->t('ARK fieldname'),
+      '#description' => $this->t('Machine name of the Drupal field where ARKs are to be stored.'),
+      '#default_value' => $config->get('larkm_integration_ark_fieldname'),
+    ];
+    // For now, we're only interested in nodes.
+    $bundle_info = \Drupal::service('entity_type.bundle.info')->getBundleInfo('node');
+    $options = [];
+    foreach ($bundle_info as $name => $details) {
+      $options[$name] = $details['label'];
+    }
+    $form['larkm_integration_bundles'] = [
+      // '#weight' => -10,
+      '#type' => 'checkboxes',
+      '#options' => $options,
+      '#default_value' => $config->get('larkm_integration_bundles'),
+      '#description' => $this->t('Mint ARKs for the checked content types.'),
+      '#title' => $this->t('Content types'),
+    ];
 
     return parent::buildForm($form, $form_state);
   }
@@ -70,10 +83,11 @@ class LarkmIntegrationSettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->configFactory->getEditable('larkm_integration.settings')
-      ->set('larkm_integration_ark_fieldname', $form_state->getValue('larkm_integration_ark_fieldname'))
       ->set('larkm_integration_larkm_hostname', $form_state->getValue('larkm_integration_larkm_hostname'))
       ->set('larkm_integration_naan', $form_state->getValue('larkm_integration_naan'))
       ->set('larkm_integration_shoulder', $form_state->getValue('larkm_integration_shoulder'))
+      ->set('larkm_integration_ark_fieldname', $form_state->getValue('larkm_integration_ark_fieldname'))
+      ->set('larkm_integration_bundles', $form_state->getValue('larkm_integration_bundles'))
       ->save();
 
     parent::submitForm($form, $form_state);
