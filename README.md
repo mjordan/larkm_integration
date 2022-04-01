@@ -7,7 +7,7 @@ Proof of concept Drupal module that integrates the larkm ARK manager.
 Concept is that an ARK that uses a node's UUID as its identifier string can be assigned to a node before the ARK is minted in its resolver. This module does two things:
 
 1. auto-populates a field (which you identify in the module's configuration settings) with an ARK using the node's UUID as the identifier string
-1. provides a view that lists the title, UUID, and node ID of all nodes created on the specified day (see sample URL below)
+1. provides a view that lists the title, UUID, and node ID of all nodes created or modified on the specified day (see sample URL below)
 
 The list is intended to be consumed by a script that creates the ARKs in larkm as a daily batch. This batch-creation-of-ARKs-after-the-resource-is-created approach is an alternative to the more common create-PID-in-realtime-on-node creation approach.
 
@@ -42,7 +42,7 @@ By default the View contains a `title`, `uuid`, and `nid` field; you can add add
 
 Minting of ARKs is automatic, using the node's UUID as the identifier string in its ARK, and the configured larkm hostname, NAAN, and shoulder.
 
-In order to create and pesist the ARKs so that larkm can resolve them, you will need a script similar to the larkm's "mint_arks_from_csv.py". The View that this module installs will provide a list of all the nodes created on the day specified in the `created_date` query parameter: `http://localhost:8000/larkm_daily_nodes?_format=json&created_date=20220215`, here the value of `created_date` is today's date in YYYYMMDD format. Using this request, you can generate a daily list of nodes to run through your ARK minting script. The View only contains three fields, `title`, `uuid`, and `nid`. This is engough data for your script to create larkm identifiers (from `uuid` values), "erc_what" values (from `title` values), and target URLs and "erc_where" values (from `nid` values). If you want your ARKs to contain "erc_when" and "erc_who" values, you will need to add to the View the Drupal fields that your script will map to those ARK metadata fields.
+In order to create and pesist the ARKs so that larkm can resolve them, you will need a script similar to the larkm's "mint_arks_from_csv.py". The View that this module installs will provide a list of all the nodes created/modified on the day specified in the `date` query parameter: `http://localhost:8000/larkm_daily_nodes?_format=json&date=20220215`, here the value of `date` is today's date in YYYYMMDD format. Using this request, you can generate a daily list of nodes to run through your ARK minting script. The View only contains three fields, `title`, `uuid`, and `nid`. This is engough data for your script to create larkm identifiers (from `uuid` values), "erc_what" values (from `title` values), and target URLs and "erc_where" values (from `nid` values). If you want your ARKs to contain "erc_when" and "erc_who" values, you will need to add to the View the Drupal fields that your script will map to those ARK metadata fields.
 
 
 ## Current maintainer
